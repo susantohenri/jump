@@ -1,13 +1,14 @@
 <?php
 
 $json = $argv[1];
-$toGenerate = $argv[2] ?: 'all';
+$toGenerate = $argv[2] ?? 'all';
 $structure = json_decode(file_get_contents($json));
 
 if (in_array($toGenerate, array('all', 'migration'))) {
 	// COLLECT MIGRATION INDEX
-	$existingMigrations = scandir('../migrations');
-	$seeds = $latestMigration = end($existingMigrations);
+	$existingMigrations = glob('../migrations/*.php');
+	sort($existingMigrations);
+	$seeds = $latestMigration = basename(end($existingMigrations));
 	$latestMigrationNumber = explode('_', $latestMigration);
 	$newMigration = (int) $latestMigrationNumber[0];
 
@@ -20,7 +21,7 @@ if (in_array($toGenerate, array('all', 'migration'))) {
 	// GIVE PERMISSION FOR ALL ENTITIES TO ADMIN
 	$seedsTmp = $newSeeds;
 	$seedsContent = file_get_contents($seedsTmp);
-	foreach (array_map(create_function('$entity', 'return $entity->controller;'), $structure) as $entityName) {
+	foreach (array_map(function($entity) { return $entity->controller; }, $structure) as $entityName) {
 		$seedsContent = str_replace('/*additionalEntity*/', ", '{$entityName}'/*additionalEntity*/", $seedsContent);
 	}
 	file_put_contents($newSeeds, $seedsContent);
@@ -30,7 +31,7 @@ if (in_array($toGenerate, array('all', 'migration'))) {
 	*/
 	$permissionModel = '../models/Permissions.php';
 	$permissionModelContent = file_get_contents($permissionModel);
-	foreach (array_map(create_function('$entity', 'return $entity->controller;'), $structure) as $entityName) {
+	foreach (array_map(function($entity) { return $entity->controller; }, $structure) as $entityName) {
 		$permissionModelContent = str_replace(
 			'/*additionalEntity*/',
 			"array ('text' => '{$entityName}', 'value' => '{$entityName}'),\n          /*additionalEntity*/",
@@ -45,11 +46,11 @@ foreach ($structure as $entity) {
 	/*
 		SET DEFAULT VALUES TO SIMPLIFY JSON
 	*/
-	$entity->model = $entity->model ?: "{$entity->controller}s";
-	$entity->table = $entity->table ?: strtolower($entity->controller);
+	$entity->model = $entity->model ?? "{$entity->controller}s";
+	$entity->table = $entity->table ?? strtolower($entity->controller);
 	foreach ($entity->fields as $index => $field) {
-		$entity->fields[$index]->type = $field->type ?: 'string';
-		$entity->fields[$index]->label = $field->label ?: ucfirst($field->name);
+		$entity->fields[$index]->type = $field->type ?? 'string';
+		$entity->fields[$index]->label = $field->label ?? ucfirst($field->name);
 		$entity->fields[$index]->index = 'relation' === $field->type;
 	}
 
@@ -78,7 +79,7 @@ foreach ($structure as $entity) {
 		$dtField = "->select('{$entity->table}.{$entity->fields[0]->name}')";
 		foreach ($entity->fields as $field) {
 			if (isset($field->form) && false === $field->form) continue;
-			$field->width = $field->width ?: 2;
+			$field->width = $field->width ?? 2;
 			switch ($field->type) {
 				case 'relation':
 					$fields .= "\n        array (
@@ -92,6 +93,7 @@ foreach ($structure as $entity) {
 		        array('data-field' => '{$field->field}')
 			    )),";
 					break;
+				case 'number':
 				case 'int':
 					$fields .= "\n        array (
 		      'name' => '{$field->name}',
@@ -145,8 +147,8 @@ foreach ($structure as $entity) {
 		}
 
 		$childs = '';
-		if ($entity->childs) foreach ($entity->childs as $child) {
-			$child->model = $child->model ?: "{$child->controller}s";
+		if (!empty($entity->childs)) foreach ($entity->childs as $child) {
+			$child->model = $child->model ?? "{$child->controller}s";
 			$childs .= "\n        array (
 				      'label' => '{$child->label}',
 				      'controller' => '{$child->controller}',
@@ -165,7 +167,7 @@ foreach ($structure as $entity) {
 		GENERATING MIGRATION
 	*/
 	if (in_array($toGenerate, array('all', 'migration'))) {
-		$entity->migration = str_replace("_", '}}', $entity->table);
+		$entity->migration = $entity->table;
 		$migrationTmp = 'Migration.php';
 		$migrationContent = file_get_contents($migrationTmp);
 		$migrationContent = str_replace('{{migrationName}}', $entity->migration, $migrationContent);
