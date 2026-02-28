@@ -66,7 +66,6 @@
                       <input class="form-control" type="<?= $field['type'] ?>" value="<?= htmlentities($field['value']) ?>" name="<?= $field['name'] ?>" <?= $field['attr'] ?>>
                     </div>
                   </div>
-                </div>
                 <?php break; ?>
             <?php endswitch; ?>
 
