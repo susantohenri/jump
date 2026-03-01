@@ -1,9 +1,74 @@
 [
 	{
-		"controller": "Category",
+		"controller": "Warehouse",
 		"fields": [
 			{
-				"name": "Name"
+				"name": "name"
+			}
+		],
+		"childs": [
+			{
+				"controller": "WarehouseProduct",
+				"model": "WarehouseProducts",
+				"label": "Stock"
+			}
+		]
+	},
+	{
+		"controller": "Product",
+		"fields": [
+			{
+				"name": "name"
+			}
+		]
+	},
+	{
+		"controller": "WarehouseProduct",
+		"fields": [
+			{
+				"name": "product",
+				"type": "relation",
+				"model": "Products",
+				"field": "name",
+				"width": 5
+			},
+			{
+				"name": "warehouse",
+				"type": "relation",
+				"model": "Warehouses",
+				"field": "name",
+				"form": false
+			},
+			{
+				"name": "stock",
+				"type": "int"
+			}
+		]
+	},
+	{
+		"controller": "Movement",
+		"fields": [
+			{
+				"name": "source",
+				"type": "relation",
+				"model": "Warehouses",
+				"field": "name"
+			},
+			{
+				"name": "destination",
+				"type": "relation",
+				"model": "Warehouses",
+				"field": "name"
+			},
+			{
+				"name": "product",
+				"type": "relation",
+				"model": "Products",
+				"field": "name"
+			},
+			{
+				"name": "stock",
+				"type": "int"
 			}
 		]
 	}

@@ -18,6 +18,10 @@ class Permissions extends MY_Model {
           array ('text' => 'Category', 'value' => 'Category'),
           array ('text' => 'DisposalMethod', 'value' => 'DisposalMethod'),
           array ('text' => 'Location', 'value' => 'Location'),
+          array ('text' => 'Warehouse', 'value' => 'Warehouse'),
+          array ('text' => 'Product', 'value' => 'Product'),
+          array ('text' => 'WarehouseProduct', 'value' => 'WarehouseProduct'),
+          array ('text' => 'Movement', 'value' => 'Movement'),
           /*additionalEntity*/
         ),
         'width' => 4
