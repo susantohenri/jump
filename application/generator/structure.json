@@ -1,9 +1,96 @@
 [
 	{
-		"controller": "Category",
+		"controller": "Income",
 		"fields": [
 			{
-				"name": "Name"
+				"name": "name"
+			},
+			{
+				"name": "amount",
+				"type": "int"
+			},
+			{
+				"name": "balance",
+				"type": "int"
+			}
+		],
+		"childs": [
+			{
+				"label": "Alocation",
+				"controller": "Alocation",
+				"model": "Alocations"
+			}
+		]
+	},
+	{
+		"controller": "Envelope",
+		"fields": [
+			{
+				"name": "name"
+			},
+			{
+				"name": "income",
+				"type": "int"
+			},
+			{
+				"name": "spending",
+				"type": "int"
+			},
+			{
+				"name": "balance",
+				"type": "int"
+			}
+		],
+		"childs": [
+			{
+				"label": "Spending",
+				"controller": "Spending",
+				"model": "Spendings"
+			}
+		]
+	},
+	{
+		"controller": "Alocation",
+		"fields": [
+			{
+				"name": "income",
+				"type": "relation",
+				"model": "Income",
+				"field": "name",
+				"form": false
+			},
+			{
+				"name": "envelope",
+				"type": "relation",
+				"model": "Envelopes",
+				"field": "name",
+				"width": 5
+			},
+			{
+				"name": "amount",
+				"type": "int",
+				"width": 3
+			}
+		]
+	},
+	{
+		"controller": "Spending",
+		"fields": [
+			{
+				"name": "envelope",
+				"type": "relation",
+				"model": "Envelopes",
+				"field": "name",
+				"form": false
+			},
+			{
+				"name": "name",
+				"width": 5
+			},
+			{
+				"name": "amount",
+				"type": "int",
+				"width": 3
 			}
 		]
 	}
