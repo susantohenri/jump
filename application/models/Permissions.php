@@ -18,6 +18,7 @@ class Permissions extends MY_Model {
           array ('text' => 'Category', 'value' => 'Category'),
           array ('text' => 'DisposalMethod', 'value' => 'DisposalMethod'),
           array ('text' => 'Location', 'value' => 'Location'),
+          array ('text' => 'HolidayLookup', 'value' => 'HolidayLookup'),
           /*additionalEntity*/
         ),
         'width' => 4

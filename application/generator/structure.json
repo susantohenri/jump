@@ -1,9 +1,18 @@
 [
 	{
-		"controller": "Category",
+		"controller": "HolidayLookup",
 		"fields": [
 			{
-				"name": "Name"
+				"name": "name",
+				"options": []
+			},
+			{
+				"name": "holidayDate",
+				"type": "date"
+			},
+			{
+				"name": "howManyDaysFromNow",
+				"type": "int"
 			}
 		]
 	}
