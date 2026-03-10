@@ -11,7 +11,7 @@ class MY_Controller extends CI_Controller {
     if (empty ($this->session->userdata['uuid'])) redirect (site_url('Login'), 'refresh');
     $this->controller = $this->router->class;
 
-    $page_title = preg_split('#([A-Z][^A-Z]*)#', $this->controller, null, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+    $page_title = preg_split('#([A-Z][^A-Z]*)#', $this->controller, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
     $page_title = implode(' ', $page_title);
     $this->subformlabel = $page_title;
 
@@ -23,7 +23,7 @@ class MY_Controller extends CI_Controller {
     $vars['error'] = $this->session->flashdata('model_error');
     $vars['account_type'] = $this->session->userdata('role');
 
-    $page_title = preg_split('#([A-Z][^A-Z]*)#', $this->controller, null, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+    $page_title = preg_split('#([A-Z][^A-Z]*)#', $this->controller, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
     $page_title = implode(' ', $page_title);
     $vars['page_title']   = isset($this->page_title) ? $this->page_title: $page_title;
 

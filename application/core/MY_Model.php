@@ -89,7 +89,7 @@ class MY_Model extends CI_Model
       ->select("uuid as id", false)
       ->select("$field as text", false)
       ->limit(10)
-      ->like($field, $term)->get($this->table)->result();
+      ->like($field, $term ?? '')->get($this->table)->result();
   }
 
   function delete($uuid)
